@@ -113,7 +113,7 @@ class SRT:
         Select(self.driver.find_element(By.ID, "dptTm")).select_by_visible_text(self.dpt_tm)
 
         print("기차를 조회합니다")
-        print(f"출발역:{self.dpt_stn} , 도착역:{self.arr_stn}\n날짜:{self.dpt_dt}, 시간: {self.dpt_tm}시 이후\n{self.num_trains_to_check}개의 기차 중 예약")
+        print(f"출발역:{self.dpt_stn} , 도착역:{self.arr_stn}\n날짜:{self.dpt_dt}, 시간: {self.dpt_tm}시 이후\n{self.num_trains_to_check}번째 기차 예약")
         print(f"예약 대기 사용: {self.want_reserve}")
 
         # 조회하기 버튼 클릭
@@ -123,7 +123,7 @@ class SRT:
 
     def refresh_search_result(self):
         while True:
-            for i in range(1, self.num_trains_to_check+1):
+                i =self.num_trains_to_check
                 try:
                     standard_seat = self.driver.find_element(By.CSS_SELECTOR, f"#result-form > fieldset > div.tbl_wrap.th_thead > table > tbody > tr:nth-child({i}) > td:nth-child(7)").text
                     reservation = self.driver.find_element(By.CSS_SELECTOR, f"#result-form > fieldset > div.tbl_wrap.th_thead > table > tbody > tr:nth-child({i}) > td:nth-child(8)").text
@@ -160,18 +160,18 @@ class SRT:
                         is_booked = True
                         return self.driver
 
-            if not self.is_booked:
-                time.sleep(randint(2, 4))  # 2~4초 랜덤으로 기다리기
+                if not self.is_booked:
+                    time.sleep(randint(2, 4))  # 2~4초 랜덤으로 기다리기
 
-                # 다시 조회하기
-                submit = self.driver.find_element(By.XPATH, "//input[@value='조회하기']")
-                self.driver.execute_script("arguments[0].click();", submit)
-                self.cnt_refresh += 1
-                print(f"새로고침 {self.cnt_refresh}회")
-                self.driver.implicitly_wait(10)
-                time.sleep(0.5)
-            else:
-                return self.driver
+                    # 다시 조회하기
+                    submit = self.driver.find_element(By.XPATH, "//input[@value='조회하기']")
+                    self.driver.execute_script("arguments[0].click();", submit)
+                    self.cnt_refresh += 1
+                    print(f"새로고침 {self.cnt_refresh}회")
+                    self.driver.implicitly_wait(10)
+                    time.sleep(0.5)
+                else:
+                    return self.driver
 
     def run(self, login_id, login_psw):
         self.run_driver()
