@@ -4,12 +4,15 @@
 from srt_reservation.main import SRT
 from srt_reservation.util import parse_cli_args
 from datetime import datetime
+from dotenv import load_dotenv
+import os 
 
+load_dotenv()
 if __name__ == "__main__":
     cli_args = parse_cli_args()
 
     login_id = "2183702117"
-    login_psw = "xogns123!"
+    login_psw = os.environ.get('srt_psw')
     dpt_stn = "대전"
     arr_stn = "울산(통도사)"
     # dpt_dt = "20220603"
